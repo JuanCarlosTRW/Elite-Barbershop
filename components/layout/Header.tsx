@@ -49,8 +49,6 @@ export function Header() {
     { href: "/" as const, label: t("home") },
     { href: "/services" as const, label: t("services") },
     { href: "/about" as const, label: t("about") },
-    { href: "/barber-laval" as const, label: t("barberLaval") },
-    { href: "/contact" as const, label: t("contact") },
     { href: "/franchise" as const, label: t("franchise") },
   ];
 

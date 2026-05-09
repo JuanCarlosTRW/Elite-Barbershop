@@ -236,10 +236,130 @@
   margin-right: auto;
 }
 
+/* Illuminated globe — clean radial halo + pulsing ring replaces the
+   orange particle fog that used to surround the rotating planet. */
+.franchise-page .globe-illuminated {
+  isolation: isolate;
+}
+.franchise-page .globe-illuminated > canvas,
+.franchise-page .globe-illuminated > div {
+  position: relative;
+  z-index: 2;
+}
+
+.franchise-page .globe-aura {
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(28px);
+  opacity: 0;
+  animation: globe-illuminate 6s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.franchise-page .globe-aura--inner {
+  inset: 8%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(212, 175, 55, 0.42) 0%,
+    rgba(182, 139, 60, 0.22) 30%,
+    rgba(140, 107, 63, 0.08) 55%,
+    transparent 75%
+  );
+  filter: blur(18px);
+  animation-delay: 0s;
+}
+.franchise-page .globe-aura--outer {
+  inset: -22%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(212, 175, 55, 0.18) 0%,
+    rgba(182, 139, 60, 0.10) 35%,
+    transparent 65%
+  );
+  filter: blur(40px);
+  animation-delay: 1.4s;
+}
+
+/* Slow rotating ring of light around the globe */
+.franchise-page .globe-ring {
+  position: absolute;
+  inset: -3%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(212, 175, 55, 0.0) 60deg,
+    rgba(212, 175, 55, 0.55) 120deg,
+    rgba(255, 230, 170, 0.85) 150deg,
+    rgba(212, 175, 55, 0.55) 180deg,
+    rgba(212, 175, 55, 0.0) 240deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(
+    circle at 50% 50%,
+    transparent 0%,
+    transparent 47%,
+    #000 49%,
+    #000 50%,
+    transparent 52%
+  );
+          mask: radial-gradient(
+    circle at 50% 50%,
+    transparent 0%,
+    transparent 47%,
+    #000 49%,
+    #000 50%,
+    transparent 52%
+  );
+  filter: blur(2px);
+  opacity: 0.7;
+  animation: globe-ring-rotate 14s linear infinite;
+}
+
+@keyframes globe-illuminate {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes globe-ring-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Tone down the warm grain texture inside the globe wrapper so the
+   illumination reads cleanly without the old orangey fog. */
+.franchise-page .globe-illuminated::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(5, 5, 5, 0.85) 0%,
+    rgba(5, 5, 5, 0.55) 45%,
+    transparent 70%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .franchise-page .pulse-soft,
   .franchise-page .fade-up,
-  .franchise-page .fade-in {
+  .franchise-page .fade-in,
+  .franchise-page .globe-aura,
+  .franchise-page .globe-ring {
     animation: none !important;
   }
+  .franchise-page .globe-aura { opacity: 0.7; }
 }

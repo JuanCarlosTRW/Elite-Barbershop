@@ -71,8 +71,12 @@ export function FranchiseHero({ locale }: FranchiseHeroProps) {
           className="fade-in relative w-full flex items-center justify-center mt-10 md:mt-12"
           style={{ animationDelay: "0.9s" }}
         >
-          <div className="globe-mount">
-            <Globe />
+          <div className="globe-mount globe-illuminated">
+            {/* Animated illumination halo — replaces the old orange particle fog */}
+            <span className="globe-aura globe-aura--inner" aria-hidden="true" />
+            <span className="globe-aura globe-aura--outer" aria-hidden="true" />
+            <span className="globe-ring" aria-hidden="true" />
+            <Globe particles={false} />
           </div>
         </div>
 

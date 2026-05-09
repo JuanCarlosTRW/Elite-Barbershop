@@ -427,6 +427,48 @@ export function ServicesSection() {
     return () => io.disconnect();
   }, []);
 
+  // Auto-play card icon animations every 3s — adds .auto-play for ~900ms per
+  // tick, with a small per-card stagger so they don't all fire in unison.
+  // Pauses when the user hovers a card and respects prefers-reduced-motion.
+  useEffect(() => {
+    const root = sectionRef.current;
+    if (!root) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const PERIOD = 3000;
+    const HOLD = 900;
+    const STAGGER = 140;
+
+    const cards = Array.from(
+      root.querySelectorAll<HTMLElement>(".card")
+    );
+    if (!cards.length) return;
+
+    const timeouts: number[] = [];
+    const tick = () => {
+      cards.forEach((card, i) => {
+        const t1 = window.setTimeout(() => {
+          if (!card.matches(":hover")) card.classList.add("auto-play");
+        }, i * STAGGER);
+        const t2 = window.setTimeout(() => {
+          card.classList.remove("auto-play");
+        }, i * STAGGER + HOLD);
+        timeouts.push(t1, t2);
+      });
+    };
+
+    // Kick off shortly after mount, then every PERIOD.
+    const startDelay = window.setTimeout(tick, 700);
+    const id = window.setInterval(tick, PERIOD);
+
+    return () => {
+      window.clearTimeout(startDelay);
+      window.clearInterval(id);
+      timeouts.forEach((t) => window.clearTimeout(t));
+      cards.forEach((c) => c.classList.remove("auto-play"));
+    };
+  }, []);
+
   return (
     <div
       id="services"

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { BUSINESS } from "@/lib/constants";
 import {
   ICONS,
   type IconName,
-  GlassIcon,
   ArrowIcon,
   CheckIcon,
 } from "@/components/sections/services/Icons";
@@ -39,6 +39,7 @@ const ESSENTIAL_SERVICES: Service[] = [
     copy: "Coupe façonnée avec expertise. Un style qui dure toute la semaine.",
     feats: ["Consultation de style", "Coupe ciseaux + tondeuse", "Fini lavage et coiffage"],
     price: 40,
+    star: true,
     drink: true,
   },
   {
@@ -50,7 +51,6 @@ const ESSENTIAL_SERVICES: Service[] = [
       "La transformation complète. Coupe précise, barbe tracée au rasoir, finition impeccable.",
     feats: ["Coupe complète", "Barbe tracée au rasoir", "Cire de finition"],
     price: 50,
-    star: true,
     drink: true,
   },
   {
@@ -115,16 +115,13 @@ function Price({ amount }: { amount: number }) {
 }
 
 function BookButton({
-  children = (
-    <>
-      Réserver <ArrowIcon />
-    </>
-  ),
+  children,
   className = "btn-book",
 }: {
   children?: React.ReactNode;
   className?: string;
 }) {
+  const t = useTranslations("services");
   return (
     <a
       href={BUSINESS.booking.url}
@@ -132,7 +129,11 @@ function BookButton({
       rel="noopener noreferrer"
       className={className}
     >
-      {children}
+      {children ?? (
+        <>
+          {t("book")} <ArrowIcon />
+        </>
+      )}
     </a>
   );
 }
@@ -193,18 +194,20 @@ function Reveal({
 
 function ServiceCard({ s, idx }: { s: Service; idx: number }) {
   const Icon = ICONS[s.icon];
+  const t = useTranslations("services");
   return (
     <Reveal delay={idx * 100} className={`card ${s.star ? "card--star" : ""}`}>
+      <span className="card-num-watermark" aria-hidden="true">{s.num}</span>
       {s.star && (
         <span className="badge-popular">
-          <span className="star">★</span>Le plus demandé
+          <span className="star">★</span>
+          {t("popular")}
         </span>
       )}
-      <span className="card-num">— {s.num}</span>
+      <span className="card-num">{s.num}</span>
       {s.drink && (
-        <span className="badge-drink" title="Boisson offerte">
-          <GlassIcon />
-          <span>Boisson offerte</span>
+        <span className="badge-drink" title={t("drink")}>
+          <span>{t("drink")}</span>
         </span>
       )}
       <div className="card-icon">
@@ -409,6 +412,7 @@ export function ServicesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLElement>(null);
   const [vipActive, setVipActive] = useState(false);
+  const t = useTranslations("services");
 
   // VIP active when 40%+ of spotlight is in view
   useEffect(() => {
@@ -436,22 +440,12 @@ export function ServicesSection() {
         }`}
       >
         {/* Section header — dimmable */}
-        <header className="s-head dimmable">
-          <div>
-            <Reveal>
-              <span className="s-eyebrow">Nos services · Elite Barbershop</span>
-            </Reveal>
-            <Reveal delay={120}>
-              <h1 className="s-title">
-                L&apos;art du <em>détail</em>,<br />à chaque coupe.
-              </h1>
-            </Reveal>
-          </div>
-          <Reveal delay={240}>
-            <p className="s-sub">
-              Chaque service est pensé comme un rituel. Du premier rendez-vous
-              au dernier coup de rasoir, l&apos;expérience est notre signature.
-            </p>
+        <header className="s-head s-head--minimal dimmable">
+          <Reveal>
+            <span className="s-eyebrow">{t("eyebrow")}</span>
+          </Reveal>
+          <Reveal delay={120}>
+            <h1 className="s-title">{t("title")}</h1>
           </Reveal>
         </header>
 
@@ -460,9 +454,9 @@ export function ServicesSection() {
           <Reveal>
             <div className="tier-row">
               <span className="tier-num">I</span>
-              <span>Services essentiels</span>
+              <span>{t("tier1")}</span>
               <span className="tier-line"></span>
-              <span>4 prestations</span>
+              <span>{t("tier1Count")}</span>
             </div>
           </Reveal>
 
@@ -475,7 +469,7 @@ export function ServicesSection() {
           <Reveal>
             <div className="combo-divider">
               <span className="rule"></span>
-              <span className="combo-divider-label">Combo complet · Finition</span>
+              <span className="combo-divider-label">{t("comboLabel")}</span>
               <span className="rule"></span>
             </div>
           </Reveal>
@@ -492,9 +486,9 @@ export function ServicesSection() {
           <Reveal>
             <div className="tier-row">
               <span className="tier-num">III</span>
-              <span>Disponibilité étendue</span>
+              <span>{t("tier3")}</span>
               <span className="tier-line"></span>
-              <span>Sur demande</span>
+              <span>{t("tier3Note")}</span>
             </div>
           </Reveal>
           <AfterHours />
@@ -502,9 +496,9 @@ export function ServicesSection() {
           <Reveal>
             <div className="tier-row" style={{ marginTop: "72px" }}>
               <span className="tier-num">IV</span>
-              <span>Première visite</span>
+              <span>{t("tier4")}</span>
               <span className="tier-line"></span>
-              <span>Welcome offer</span>
+              <span>{t("tier4Note")}</span>
             </div>
           </Reveal>
           <WelcomeBanner />

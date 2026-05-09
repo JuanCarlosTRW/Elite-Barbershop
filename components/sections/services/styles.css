@@ -25,6 +25,7 @@
      Space Grotesk (geometric sans, mapped to both --sans and --mono — the design
      uses --mono for tracked uppercase labels which Space Grotesk handles well) */
   --serif: var(--font-display), "Bodoni Moda", "Times New Roman", Georgia, serif;
+  --display: var(--font-soria), var(--font-display), "Bodoni Moda", "Times New Roman", Georgia, serif;
   --sans: var(--font-body), "Manrope", system-ui, -apple-system, sans-serif;
   --mono: var(--font-body), "JetBrains Mono", ui-monospace, monospace;
 

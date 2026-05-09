@@ -252,11 +252,11 @@
 
 /* VIP titles & copy */
 .vip-hero-title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(36px, 4.5vw, 52px);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(38px, 5vw, 58px);
+  line-height: 1;
+  letter-spacing: -0.005em;
   margin: 0 0 16px;
   color: var(--ink);
 }
@@ -441,70 +441,23 @@
   padding: 0 4px;
 }
 
+/* Combo card — same vertical card style as the essentials, centered */
 .section-v2 .combo-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
   margin-bottom: 0;
+  justify-content: center;
 }
-@media (min-width: 721px) {
-  .section-v2 .combo-grid > .card {
-    display: grid;
-    grid-template-columns: 120px 1fr auto;
-    grid-template-rows: auto auto auto;
-    grid-template-areas:
-      "icon title foot"
-      "icon copy  foot"
-      "icon feats foot";
-    column-gap: 36px;
-    row-gap: 6px;
-    align-items: center;
-    min-height: auto;
-    padding: 32px 36px;
-  }
-  .section-v2 .combo-grid > .card .card-num {
-    top: 18px; right: 22px;
-  }
-  .section-v2 .combo-grid > .card .badge-drink {
-    top: 38px; right: 22px;
-  }
-  .section-v2 .combo-grid > .card .card-icon {
-    grid-area: icon;
-    align-self: center;
-    width: 96px; height: 96px; margin-bottom: 0;
-  }
-  .section-v2 .combo-grid > .card .card-title {
-    grid-area: title;
-    align-self: end;
-    margin-bottom: 0;
-  }
-  .section-v2 .combo-grid > .card .card-copy {
-    grid-area: copy;
-    margin-bottom: 0;
-    max-width: 480px;
-  }
-  .section-v2 .combo-grid > .card .card-feats {
-    grid-area: feats;
-    align-self: start;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px 18px;
-    margin-bottom: 0;
-    margin-top: 6px;
-  }
-  .section-v2 .combo-grid > .card .card-foot {
-    grid-area: foot;
-    align-self: center;
-    margin-top: 0;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 14px;
-    padding-top: 0;
-    border-top: none;
-    border-left: 1px solid var(--hairline);
-    padding-left: 28px;
-    height: 100%;
-    justify-content: center;
-  }
+.section-v2 .combo-grid > .card {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: calc((100% - 32px) / 2);
+}
+@media (max-width: 720px) {
+  .section-v2 .combo-grid { grid-template-columns: 1fr; gap: 20px; }
+  .section-v2 .combo-grid > .card { max-width: 100%; }
 }
 
 /* ---------- Card badges (Popular / Drink offered) ---------- */
@@ -789,11 +742,11 @@
   animation: pulseDot 2.4s ease-in-out infinite;
 }
 .welcome-v2-title {
-  font-family: var(--serif);
-  font-weight: 500;
+  font-family: var(--display);
+  font-weight: 400;
   font-size: clamp(36px, 4vw, 56px);
-  line-height: 0.98;
-  letter-spacing: -0.02em;
+  line-height: 1.02;
+  letter-spacing: -0.005em;
   color: var(--ink);
   margin: 0 0 18px;
 }
@@ -1146,4 +1099,245 @@
   .section-v2 .up-arrow svg {
     animation: none !important;
   }
+}
+
+/* ============================================================
+   V4 — Minimal header, editorial numerals, premium star card
+   ============================================================ */
+
+/* Minimal section header — eyebrow + tight title only */
+.section-v2 .s-head--minimal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 36px;
+  margin-bottom: 64px;
+  border-bottom: 1px solid var(--hairline);
+}
+.section-v2 .s-head--minimal .s-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  color: var(--gold);
+}
+.section-v2 .s-head--minimal .s-title {
+  font-family: var(--display);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(54px, 9vw, 132px);
+  line-height: 0.95;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+.section-v2 .s-head--minimal .s-title::first-letter {
+  text-transform: capitalize;
+}
+
+@media (max-width: 720px) {
+  .section-v2 .s-head--minimal {
+    gap: 14px;
+    padding-bottom: 24px;
+    margin-bottom: 36px;
+  }
+  .section-v2 .s-head--minimal .s-title {
+    font-size: clamp(44px, 13vw, 72px);
+  }
+}
+
+/* Editorial watermark numerals — large italic serif on each card */
+.section-v2 .card-num-watermark {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 96px;
+  line-height: 0.85;
+  color: var(--gold);
+  opacity: 0.08;
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+.section-v2 .card:hover .card-num-watermark {
+  opacity: 0.22;
+  transform: translateY(-2px);
+}
+.section-v2 .card--star .card-num-watermark {
+  opacity: 0.16;
+}
+
+/* Hide old corner number badge — replaced by watermark */
+.section-v2 .card .card-num { display: none; }
+
+/* Combo card watermark — top-right like the others */
+.section-v2 .combo-grid > .card .card-num-watermark {
+  top: 14px;
+  right: 22px;
+  font-size: 96px;
+}
+
+@media (max-width: 720px) {
+  .section-v2 .card-num-watermark {
+    font-size: 72px;
+    top: 10px;
+    right: 18px;
+  }
+  .section-v2 .combo-grid > .card .card-num-watermark {
+    font-size: 64px;
+  }
+}
+
+/* Premium "most-booked" card — richer surface, gold halo, inner glow */
+.section-v2 .card--star {
+  background:
+    radial-gradient(ellipse at 75% 0%, rgba(212, 168, 83, 0.14), transparent 55%),
+    linear-gradient(180deg, rgba(212, 168, 83, 0.05) 0%, transparent 45%),
+    var(--bg-card);
+  border-color: rgba(212, 168, 83, 0.5);
+  box-shadow:
+    0 8px 28px rgba(212, 168, 83, 0.14),
+    inset 0 1px 0 rgba(212, 168, 83, 0.18);
+}
+.section-v2 .card--star:hover {
+  border-color: rgba(212, 168, 83, 0.7);
+  box-shadow:
+    0 16px 40px rgba(212, 168, 83, 0.24),
+    inset 0 1px 0 rgba(212, 168, 83, 0.28);
+}
+/* The base .card--star::after gold top rule stays; refine its weight */
+.section-v2 .card--star::after {
+  border-top-width: 1.5px;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Combo card — subtle warm wash to set it apart from essentials */
+.section-v2 .combo-grid > .card {
+  background:
+    linear-gradient(135deg, rgba(212, 168, 83, 0.05) 0%, transparent 60%),
+    var(--bg-card);
+  border-color: rgba(212, 168, 83, 0.3);
+}
+
+/* Refine card title rhythm + price emphasis */
+.section-v2 .card-title {
+  font-size: 28px;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  margin-bottom: 12px;
+}
+.section-v2 .card-copy {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* Price block — more editorial, tighter pairing */
+.section-v2 .price {
+  align-items: baseline;
+}
+.section-v2 .price-currency {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  transform: translateY(-12px);
+  opacity: 0.85;
+}
+.section-v2 .price-amount {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.section-v2 .card--star .price-amount {
+  color: var(--gold);
+}
+.section-v2 .price-suffix {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--ink-3);
+  margin-left: 6px;
+}
+
+/* Badge polish — popular badge sits more prominently on the star card */
+.section-v2 .card--star .badge-popular {
+  background: rgba(212, 168, 83, 0.12);
+  border-color: rgba(212, 168, 83, 0.7);
+  color: var(--gold-hi);
+}
+
+/* Drink badge — sits just above the price/CTA foot rule */
+.section-v2 .core-grid > .card .badge-drink,
+.section-v2 .combo-grid > .card .badge-drink {
+  top: auto;
+  bottom: 88px;
+  right: 22px;
+  letter-spacing: 0.18em;
+}
+.section-v2 .core-grid > .card--star .badge-drink {
+  top: auto;
+  bottom: 88px;
+  right: 22px;
+}
+
+/* Mobile responsive polish — tighter cards, better badge placement */
+@media (max-width: 720px) {
+  .section-v2 .card {
+    padding: 32px 24px 26px;
+  }
+  .section-v2 .card-title { font-size: 24px; }
+  .section-v2 .price-amount { font-size: 36px; }
+  .section-v2 .card .badge-popular {
+    top: 18px;
+    left: 18px;
+    font-size: 8.5px;
+    padding: 4px 8px;
+  }
+  .section-v2 .card .badge-drink {
+    bottom: 78px;
+    right: 18px;
+  }
+  .section-v2 .card .badge-drink {
+    font-size: 8px;
+    letter-spacing: 0.14em;
+  }
+}
+
+/* Card foot — make the price + button breathe better */
+.section-v2 .card-foot {
+  padding-top: 22px;
+  border-top: 1px solid rgba(212, 168, 83, 0.12);
+}
+.section-v2 .card--star .card-foot {
+  border-top-color: rgba(212, 168, 83, 0.28);
+}
+
+/* Combo grid foot adjustments — keep border-left treatment from base v2 */
+@media (min-width: 721px) {
+  .section-v2 .combo-grid > .card .card-foot {
+    border-left-color: rgba(212, 168, 83, 0.18);
+  }
+}
+
+/* Tier rows — slightly more refined */
+.section-v2 .tier-row {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+}
+.section-v2 .tier-row .tier-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  letter-spacing: 0;
+  color: var(--gold);
 }

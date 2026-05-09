@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -21,6 +22,15 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-body",
   display: "swap",
+});
+
+// Soria — premium display face used on the largest editorial headlines
+const soria = localFont({
+  src: "../../public/fonts/soria-font.ttf",
+  variable: "--font-soria",
+  display: "swap",
+  weight: "400",
+  style: "normal",
 });
 
 export const metadata: Metadata = {
@@ -54,7 +64,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${cormorant.variable} ${spaceGrotesk.variable} antialiased`}
+      className={`${cormorant.variable} ${spaceGrotesk.variable} ${soria.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col bg-[color:var(--color-surface-1)]">
         <NextIntlClientProvider>

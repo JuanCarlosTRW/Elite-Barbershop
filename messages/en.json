@@ -48,6 +48,21 @@
       "attribution": "Hadi, Founder"
     }
   },
+  "services": {
+    "eyebrow": "Elite Barbershop",
+    "title": "Our services",
+    "tier1": "Essential services",
+    "tier1Count": "4 services",
+    "tier2": "Tier II · Premium",
+    "tier3": "Extended availability",
+    "tier3Note": "On request",
+    "tier4": "First visit",
+    "tier4Note": "Welcome offer",
+    "comboLabel": "Complete combo · Finish",
+    "popular": "Most booked",
+    "drink": "Drink on us",
+    "book": "Book"
+  },
   "visit": {
     "title": "Visit Elite Barbershop",
     "subtitle": "Since 2024, Elite Barbershop has been the master of men's style in Laval",

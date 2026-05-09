@@ -91,11 +91,11 @@ export function Hero() {
         </div>
 
         <h1
-          className="font-display text-white anim-fade-in-up mt-6 text-4xl md:text-5xl lg:text-[3.4rem]"
+          className="font-soria text-white anim-fade-in-up mt-6 text-4xl md:text-5xl lg:text-[3.4rem]"
           style={{
-            fontWeight: 500,
-            letterSpacing: "var(--tracking-tight)",
-            lineHeight: 1.05,
+            fontWeight: 400,
+            letterSpacing: "-0.005em",
+            lineHeight: 1.08,
             textShadow: "0 2px 18px rgba(0,0,0,0.55)",
           }}
         >

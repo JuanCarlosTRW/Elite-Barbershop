@@ -681,21 +681,6 @@ export function Globe({
                 >
                   {c.country}
                 </div>
-                {c.origin && (
-                  <div
-                    className="font-jost whitespace-nowrap"
-                    style={{
-                      fontSize: 6.5,
-                      letterSpacing: "0.32em",
-                      color: highlightHex,
-                      textTransform: "uppercase",
-                      marginTop: 2,
-                      opacity: 0.85,
-                    }}
-                  >
-                    ◆ Flagship
-                  </div>
-                )}
               </div>
             </div>
           ))}

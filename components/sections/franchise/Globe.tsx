@@ -102,7 +102,7 @@ export function Globe({
   goldHex = "#D4AF37",
   highlightHex = "#F2C85C",
   deepHex = "#5C4720",
-  rotationSpeed = 0.06,
+  rotationSpeed = 0.16,
   particles = true,
   showLabels = true,
 }: GlobeProps) {
@@ -264,7 +264,12 @@ export function Globe({
       pos: THREE.Vector3;
       dot: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>;
       halo: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>;
+      ring1?: THREE.Mesh<THREE.RingGeometry, THREE.MeshBasicMaterial>;
+      ring2?: THREE.Mesh<THREE.RingGeometry, THREE.MeshBasicMaterial>;
+      sparks?: THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial>;
       activation?: number;
+      lastActivation?: number;
+      shockStart?: number; // elapsed time when the burst was triggered
     };
     const cityNodes: CityNode[] = [];
 
@@ -297,7 +302,142 @@ export function Globe({
       halo.renderOrder = 1;
       earth.add(halo);
 
-      cityNodes.push({ city, pos, dot, halo });
+      // Premium landing burst — only for non-origin cities (Laval has its own
+      // breathing pulse). Two flat rings + a small sparks system, all oriented
+      // tangent to the globe surface.
+      let ring1: THREE.Mesh<THREE.RingGeometry, THREE.MeshBasicMaterial> | undefined;
+      let ring2: THREE.Mesh<THREE.RingGeometry, THREE.MeshBasicMaterial> | undefined;
+      let sparks: THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial> | undefined;
+
+      if (!city.origin) {
+        const orient = (mesh: THREE.Object3D) => {
+          // Place the ring exactly on the surface, facing outward
+          mesh.position.copy(pos).multiplyScalar(1.001);
+          mesh.lookAt(pos.clone().multiplyScalar(2));
+        };
+
+        const ringMatA = new THREE.MeshBasicMaterial({
+          color: highlight,
+          transparent: true,
+          opacity: 0,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        });
+        ring1 = new THREE.Mesh(
+          new THREE.RingGeometry(0.018, 0.022, 48),
+          ringMatA,
+        );
+        orient(ring1);
+        ring1.renderOrder = 5;
+        earth.add(ring1);
+
+        const ringMatB = new THREE.MeshBasicMaterial({
+          color: cityGold,
+          transparent: true,
+          opacity: 0,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        });
+        ring2 = new THREE.Mesh(
+          new THREE.RingGeometry(0.024, 0.026, 48),
+          ringMatB,
+        );
+        orient(ring2);
+        ring2.renderOrder = 5;
+        earth.add(ring2);
+
+        // Sparks — 14 small additive points launched along the local tangent
+        // plane and biased outward; lookup into uTime drives a tween.
+        const SPARK_COUNT = 14;
+        const sparkPos = new Float32Array(SPARK_COUNT * 3);
+        const sparkDir = new Float32Array(SPARK_COUNT * 3);
+        const sparkSeed = new Float32Array(SPARK_COUNT);
+        // Build a tangent basis for this city's surface point
+        const normal = pos.clone().normalize();
+        const arbitrary = Math.abs(normal.y) < 0.9
+          ? new THREE.Vector3(0, 1, 0)
+          : new THREE.Vector3(1, 0, 0);
+        const tangent = new THREE.Vector3()
+          .crossVectors(normal, arbitrary)
+          .normalize();
+        const bitangent = new THREE.Vector3()
+          .crossVectors(normal, tangent)
+          .normalize();
+
+        for (let i = 0; i < SPARK_COUNT; i++) {
+          sparkPos[i * 3] = pos.x;
+          sparkPos[i * 3 + 1] = pos.y;
+          sparkPos[i * 3 + 2] = pos.z;
+          const angle = (i / SPARK_COUNT) * Math.PI * 2 + Math.random() * 0.5;
+          const radial = tangent
+            .clone()
+            .multiplyScalar(Math.cos(angle))
+            .add(bitangent.clone().multiplyScalar(Math.sin(angle)));
+          // Add a small outward kick
+          const dir = radial
+            .multiplyScalar(0.085 + Math.random() * 0.06)
+            .add(normal.clone().multiplyScalar(0.04 + Math.random() * 0.03));
+          sparkDir[i * 3] = dir.x;
+          sparkDir[i * 3 + 1] = dir.y;
+          sparkDir[i * 3 + 2] = dir.z;
+          sparkSeed[i] = Math.random();
+        }
+        const sparkGeom = new THREE.BufferGeometry();
+        sparkGeom.setAttribute("position", new THREE.BufferAttribute(sparkPos, 3));
+        sparkGeom.setAttribute("aDir", new THREE.BufferAttribute(sparkDir, 3));
+        sparkGeom.setAttribute("aSeed", new THREE.BufferAttribute(sparkSeed, 1));
+
+        const sparkMat = new THREE.ShaderMaterial({
+          uniforms: {
+            uProgress:   { value: 0 },        // 0 → 1 over the burst lifetime
+            uColor:      { value: new THREE.Color(highlightHex) },
+            uPixelRatio: { value: Math.min(2, window.devicePixelRatio || 1) },
+          },
+          vertexShader: `
+            attribute vec3 aDir;
+            attribute float aSeed;
+            uniform float uProgress;
+            uniform float uPixelRatio;
+            varying float vFade;
+            varying float vSeed;
+            void main() {
+              vSeed = aSeed;
+              float p = uProgress;
+              // Easing: fast start, slow end
+              float ease = 1.0 - pow(1.0 - p, 2.4);
+              vec3 pos = position + aDir * ease * (1.6 + aSeed * 0.4);
+              vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+              vFade = (1.0 - p) * (0.6 + aSeed * 0.4);
+              gl_PointSize = (3.0 + 2.4 * aSeed) * uPixelRatio * (2.4 / -mv.z) * (0.4 + (1.0 - p) * 1.4);
+              gl_Position = projectionMatrix * mv;
+            }
+          `,
+          fragmentShader: `
+            uniform vec3 uColor;
+            varying float vFade;
+            varying float vSeed;
+            void main() {
+              vec2 c = gl_PointCoord - 0.5;
+              float d = length(c);
+              if (d > 0.5) discard;
+              float a = smoothstep(0.5, 0.0, d) * vFade;
+              if (a < 0.01) discard;
+              gl_FragColor = vec4(uColor, a);
+            }
+          `,
+          transparent: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+        });
+        sparks = new THREE.Points(sparkGeom, sparkMat);
+        sparks.renderOrder = 6;
+        sparks.frustumCulled = false;
+        earth.add(sparks);
+      }
+
+      cityNodes.push({ city, pos, dot, halo, ring1, ring2, sparks });
     });
 
     // Connecting arcs from Laval to every other city.
@@ -511,11 +651,45 @@ export function Globe({
             activation = 1;
           }
         }
+
+        // Detect the rising edge — fire a shockwave once per landing.
+        const prev = n.lastActivation ?? 0;
+        if (prev <= 0.001 && activation > 0.001) {
+          n.shockStart = elapsed;
+        }
+        n.lastActivation = activation;
+
         n.activation = activation;
         n.dot.material.opacity = activation;
         const breathe = 0.85 + Math.sin(elapsed * 2.0 + idx * 0.7) * 0.18;
         n.halo.scale.setScalar(0.75 + activation * 0.55 * breathe);
         n.halo.material.opacity = activation * 0.6;
+
+        // Animate the shockwave rings + sparks for ~0.9s after landing.
+        const BURST = 0.9;
+        if (n.shockStart !== undefined) {
+          const sp = (elapsed - n.shockStart) / BURST;
+          if (sp >= 0 && sp <= 1) {
+            // Eased outward expansion + opacity fade
+            const ease1 = 1 - Math.pow(1 - sp, 2.4);
+            const ease2 = 1 - Math.pow(1 - Math.max(0, sp - 0.18) / 0.82, 2.4);
+            if (n.ring1) {
+              n.ring1.scale.setScalar(0.6 + ease1 * 6.0);
+              n.ring1.material.opacity = (1 - sp) * 0.85;
+            }
+            if (n.ring2) {
+              n.ring2.scale.setScalar(0.6 + ease2 * 7.5);
+              n.ring2.material.opacity = (1 - sp) * 0.55;
+            }
+            if (n.sparks) {
+              n.sparks.material.uniforms.uProgress.value = sp;
+            }
+          } else {
+            if (n.ring1) n.ring1.material.opacity = 0;
+            if (n.ring2) n.ring2.material.opacity = 0;
+            if (n.sparks) n.sparks.material.uniforms.uProgress.value = 1.0;
+          }
+        }
       });
 
       arcs.forEach((a) => {
@@ -639,44 +813,54 @@ export function Globe({
                 className="relative"
                 style={{
                   transform: c.origin
-                    ? "translate(10px, -22px)"
-                    : "translate(8px, -10px)",
+                    ? "translate(14px, -26px)"
+                    : "translate(12px, -14px)",
                 }}
               >
+                {/* Connector dash — slightly bolder gradient, more visible */}
                 <div
                   className="absolute"
                   style={{
-                    left: -6,
-                    top: c.origin ? 16 : 6,
-                    width: 5,
-                    height: 1,
-                    background: c.origin ? highlightHex : goldHex,
-                    opacity: 0.7,
+                    left: -10,
+                    top: c.origin ? 20 : 10,
+                    width: 8,
+                    height: 1.5,
+                    background: c.origin
+                      ? `linear-gradient(90deg, transparent, ${highlightHex})`
+                      : `linear-gradient(90deg, transparent, ${goldHex})`,
+                    opacity: 0.95,
                   }}
                 />
+                {/* City name — Soria display face, bolder, brighter */}
                 <div
-                  className="font-cinzel whitespace-nowrap"
+                  className="whitespace-nowrap"
                   style={{
-                    fontSize: c.origin ? 9.5 : 8.5,
-                    letterSpacing: "0.22em",
-                    color: c.origin ? highlightHex : goldHex,
+                    fontFamily:
+                      "var(--font-soria), var(--font-display), Georgia, serif",
+                    fontSize: c.origin ? 14 : 12,
+                    letterSpacing: "0.1em",
+                    color: c.origin ? "#FFE7A8" : "#FFD875",
                     textTransform: "uppercase",
-                    textShadow: "0 1px 6px rgba(0,0,0,0.7)",
-                    fontWeight: c.origin ? 600 : 500,
+                    textShadow:
+                      "0 0 1px rgba(0,0,0,0.95), 0 1px 8px rgba(0,0,0,0.95), 0 0 14px rgba(212,175,55,0.35)",
+                    fontWeight: 400,
+                    lineHeight: 1,
                   }}
                 >
                   {c.name}
                 </div>
+                {/* Country — Jost mono, tracked, strong */}
                 <div
                   className="font-jost whitespace-nowrap"
                   style={{
-                    fontSize: 8.5,
-                    letterSpacing: "0.30em",
-                    color: "#E8DDC2",
+                    fontSize: c.origin ? 9.5 : 9,
+                    letterSpacing: "0.34em",
+                    color: "#F2E6CC",
                     textTransform: "uppercase",
-                    marginTop: 2,
-                    fontWeight: 400,
-                    textShadow: "0 1px 6px rgba(0,0,0,0.85), 0 0 2px rgba(0,0,0,0.6)",
+                    marginTop: 4,
+                    fontWeight: 600,
+                    textShadow:
+                      "0 0 1px rgba(0,0,0,0.95), 0 1px 6px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,0.6)",
                   }}
                 >
                   {c.country}

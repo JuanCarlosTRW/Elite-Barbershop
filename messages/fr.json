@@ -24,7 +24,7 @@
   "hero": {
     "eyebrow": "Elite Barbershop · Laval",
     "title": "L'expérience barbershop réinventée",
-    "slogan": "Luxe. Loyauté. Leadership.",
+    "slogan": "Votre look, notre passion.",
     "scrollHint": "Découvrir"
   },
   "testimonials": {
@@ -44,7 +44,7 @@
     "directions": "Itinéraire",
     "viewMap": "Voir la carte",
     "signature": {
-      "quote": "Votre style, notre passion.",
+      "quote": "Votre look, notre passion.",
       "attribution": "Hadi, Fondateur"
     }
   },

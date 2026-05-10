@@ -14,8 +14,8 @@ export function FranchiseHero({ locale }: FranchiseHeroProps) {
     : "Open Your Own Elite Barbershop";
 
   const tagline = isFr
-    ? "Luxe. Loyauté. Leadership."
-    : "Luxury. Loyalty. Leadership.";
+    ? "Votre look, notre passion."
+    : "Your look, our passion.";
 
   const lead = isFr
     ? "Apportez l'expérience Elite dans votre ville."

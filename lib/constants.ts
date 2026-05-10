@@ -78,8 +78,8 @@ export const NEIGHBORHOODS_LAVAL = [
 ] as const;
 
 export const SLOGANS = {
-  fr: "Luxe. Loyauté. Leadership.",
-  en: "Luxury. Loyalty. Leadership.",
+  fr: "Votre look, notre passion.",
+  en: "Your look, our passion.",
 } as const;
 
 export const HERO_HEADLINE = {
@@ -93,6 +93,6 @@ export const FOOTER_TAGLINE = {
 } as const;
 
 export const SIGNATURE_QUOTE = {
-  fr: { quote: "Votre style, notre passion.", attribution: "Hadi, Fondateur" },
-  en: { quote: "Your style, our passion.", attribution: "Hadi, Founder" },
+  fr: { quote: "Votre look, notre passion.", attribution: "Hadi, Fondateur" },
+  en: { quote: "Your look, our passion.", attribution: "Hadi, Founder" },
 } as const;

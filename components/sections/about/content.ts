@@ -68,8 +68,8 @@ export const ABOUT_BLOCKS: AboutBlock[] = [
   },
   {
     type: "quote",
-    quote_fr: "« Votre style, notre passion. »",
-    quote_en: "“Your style, our passion.”",
+    quote_fr: "« Votre look, notre passion. »",
+    quote_en: "“Your look, our passion.”",
   },
 ];
 

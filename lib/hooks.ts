@@ -108,6 +108,10 @@ export function useSmoothHashScroll(offset = 80) {
       const href = anchor.getAttribute("href");
       if (!href) return;
 
+      // Native CSS handles same-page hash scrolling (scroll-behavior: smooth
+      // on <html> + per-target scroll-margin-top in globals.css), so we only
+      // need to handle bare "#hash" / "/#hash" links that browsers wouldn't
+      // otherwise pick up via a normal Link navigation.
       const isHash = href.startsWith("#") || href.startsWith("/#");
       if (!isHash) return;
 

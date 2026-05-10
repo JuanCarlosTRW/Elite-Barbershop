@@ -102,6 +102,12 @@
     font-feature-settings: "ss01", "cv11";
   }
 
+  /* Hash-target scroll offset — keeps the fixed header from covering the
+     anchor when navigating to /#services, /#about, etc. */
+  [id] {
+    scroll-margin-top: 96px;
+  }
+
   ::selection {
     background: var(--color-gold-500);
     color: #000;

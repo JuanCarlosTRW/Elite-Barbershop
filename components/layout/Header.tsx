@@ -47,7 +47,10 @@ export function Header() {
 
   const navLinks = [
     { href: "/" as const, label: t("home") },
-    { href: "/services" as const, label: t("services") },
+    {
+      href: { pathname: "/" as const, hash: "services" },
+      label: t("services"),
+    },
     { href: "/about" as const, label: t("about") },
     { href: "/franchise" as const, label: t("franchise") },
   ];

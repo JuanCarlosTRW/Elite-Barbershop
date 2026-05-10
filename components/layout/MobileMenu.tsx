@@ -10,13 +10,17 @@ import {
   useOrientationClose,
 } from "@/lib/hooks";
 
-type MobileNavHref =
+type MobileNavPathname =
   | "/"
   | "/services"
   | "/about"
   | "/barber-laval"
   | "/franchise"
   | "/contact";
+
+type MobileNavHref =
+  | MobileNavPathname
+  | { pathname: MobileNavPathname; hash?: string };
 
 type MobileMenuProps = {
   open: boolean;
@@ -110,8 +114,12 @@ export function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
         <ul className="flex flex-col items-center gap-0 m-0 p-0 list-none">
           {navLinks.map(({ href, label }, idx) => {
             const isLast = idx === navLinks.length - 1;
+            const key =
+              typeof href === "string"
+                ? href
+                : `${href.pathname}#${href.hash ?? ""}`;
             return (
-              <li key={href} className="my-7">
+              <li key={key} className="my-7">
                 <Link
                   href={href}
                   onClick={onClose}

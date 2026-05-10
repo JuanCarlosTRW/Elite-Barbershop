@@ -19,86 +19,32 @@ import "@/components/sections/services/services-v2.css";
 // ─────────────────────────────────────────────────────────────────────
 
 type Service = {
-  id: string;
+  /** Translation key under services.cards.* */
+  id: "coupeAdulte" | "coupeBarbe" | "coupeEnfant" | "tourOreille" | "comboCard";
   num: string;
-  title: string;
   icon: IconName;
-  copy: string;
-  feats: string[];
+  /** Number of feature bullets to render (matches f1..fN keys) */
+  featCount: 3 | 4;
   price: number;
   star?: boolean;
   drink?: boolean;
 };
 
 const ESSENTIAL_SERVICES: Service[] = [
-  {
-    id: "coupe-adulte",
-    num: "01",
-    title: "Coupe Adulte",
-    icon: "scissors",
-    copy: "Coupe façonnée avec expertise. Un style qui dure toute la semaine.",
-    feats: ["Consultation de style", "Coupe ciseaux + tondeuse", "Fini lavage et coiffage"],
-    price: 40,
-    star: true,
-    drink: true,
-  },
-  {
-    id: "coupe-barbe",
-    num: "02",
-    title: "Coupe + Barbe",
-    icon: "razor",
-    copy:
-      "La transformation complète. Coupe précise, barbe tracée au rasoir, finition impeccable.",
-    feats: ["Coupe complète", "Barbe tracée au rasoir", "Cire de finition"],
-    price: 50,
-    drink: true,
-  },
-  {
-    id: "coupe-enfant",
-    num: "03",
-    title: "Coupe Enfant",
-    icon: "child",
-    copy: "Coupe adaptée aux jeunes. Rapide, confortable, professionnel.",
-    feats: ["12 ans et moins", "Approche patiente", "Style sur mesure"],
-    price: 30,
-    drink: true,
-  },
-  {
-    id: "tour-oreille",
-    num: "04",
-    title: "Tour d'Oreille",
-    icon: "ear",
-    copy: "Le détail qui change tout. Contours nets et précis entre les coupes.",
-    feats: ["Contours rasoir", "Nuque + tempes", "Finition rapide"],
-    price: 20,
-    drink: true,
-  },
+  { id: "coupeAdulte", num: "01", icon: "scissors", featCount: 3, price: 40, star: true, drink: true },
+  { id: "coupeBarbe",  num: "02", icon: "razor",    featCount: 3, price: 50, drink: true },
+  { id: "coupeEnfant", num: "03", icon: "child",    featCount: 3, price: 30, drink: true },
+  { id: "tourOreille", num: "04", icon: "ear",      featCount: 3, price: 20, drink: true },
 ];
 
 const COMBO_SERVICE: Service = {
-  id: "barbe-oreille",
+  id: "comboCard",
   num: "05",
-  title: "Barbe & Tour d'Oreille",
   icon: "beard",
-  copy:
-    "Finition totale. Barbe tracée au rasoir et contours nets pour un look complet.",
-  feats: [
-    "Boisson offerte",
-    "Tour d'oreille",
-    "Barbe avec tracé au rasoir",
-    "Cire de finition",
-  ],
+  featCount: 4,
   price: 25,
   drink: true,
 };
-
-const VIP_INCLUSIONS = [
-  "Consultation privée 15 min",
-  "Coupe complète sur mesure",
-  "Barbe tracée au rasoir",
-  "Soin chaud serviette",
-  "Boisson premium incluse",
-];
 
 // ─────────────────────────────────────────────────────────────────────
 // Atoms
@@ -195,6 +141,7 @@ function Reveal({
 function ServiceCard({ s, idx }: { s: Service; idx: number }) {
   const Icon = ICONS[s.icon];
   const t = useTranslations("services");
+  const featKeys = Array.from({ length: s.featCount }, (_, i) => `f${i + 1}`);
   return (
     <Reveal delay={idx * 100} className={`card ${s.star ? "card--star" : ""}`}>
       <span className="card-num-watermark" aria-hidden="true">{s.num}</span>
@@ -213,11 +160,11 @@ function ServiceCard({ s, idx }: { s: Service; idx: number }) {
       <div className="card-icon">
         <Icon />
       </div>
-      <h3 className="card-title">{s.title}</h3>
-      <p className="card-copy">{s.copy}</p>
+      <h3 className="card-title">{t(`cards.${s.id}.title`)}</h3>
+      <p className="card-copy">{t(`cards.${s.id}.copy`)}</p>
       <ul className="card-feats">
-        {s.feats.map((f) => (
-          <li key={f}>{f}</li>
+        {featKeys.map((k) => (
+          <li key={k}>{t(`cards.${s.id}.${k}`)}</li>
         ))}
       </ul>
       <div className="card-foot">
@@ -238,11 +185,14 @@ function VipSpotlight({
   spotlightRef: React.RefObject<HTMLElement | null>;
 }) {
   const Crown = ICONS.crown;
+  const t = useTranslations("services.vip");
+  // titleTrail is optional (EN: "The VIP experience"; FR has just two parts)
+  const titleTrail = t("titleTrail");
   return (
     <section className="spotlight" ref={spotlightRef}>
       <span className="spotlight-eyebrow">
         <span className="rule"></span>
-        Tier II · Premium
+        {t("tier")}
         <span className="rule"></span>
       </span>
 
@@ -254,7 +204,7 @@ function VipSpotlight({
 
         <span className="vip-hero-badge">
           <span className="dot"></span>
-          Disponibilité limitée
+          {t("badge")}
         </span>
 
         <div className="vip-hero-crown">
@@ -262,18 +212,16 @@ function VipSpotlight({
         </div>
 
         <h2 className="vip-hero-title">
-          L&apos;expérience <em>VIP</em>
+          {t("titleLead")} <em>{t("titleAccent")}</em>
+          {titleTrail ? ` ${titleTrail}` : ""}
         </h2>
-        <p className="vip-hero-copy">
-          L&apos;expérience ultime. Consultation personnalisée, transformation totale,
-          expertise exclusive. Pour ceux qui veulent le meilleur.
-        </p>
+        <p className="vip-hero-copy">{t("copy")}</p>
 
         <ul className="vip-hero-incl">
-          {VIP_INCLUSIONS.map((item) => (
-            <li key={item}>
+          {(["incl1", "incl2", "incl3", "incl4", "incl5"] as const).map((k) => (
+            <li key={k}>
               <CheckIcon />
-              <span>{item}</span>
+              <span>{t(k)}</span>
             </li>
           ))}
         </ul>
@@ -282,22 +230,19 @@ function VipSpotlight({
           <span className="price-currency">$</span>
           <span className="price-amount">100</span>
         </div>
-        <div className="vip-hero-duration">/ 75 minutes</div>
+        <div className="vip-hero-duration">{t("duration")}</div>
         <div className="vip-hero-compare">
           <span className="vip-rule"></span>
-          <em>
-            Standard&nbsp;: 50&nbsp;$ / 45&nbsp;min · VIP&nbsp;: 1&nbsp;h&nbsp;15
-            d&apos;attention dédiée
-          </em>
+          <em>{t("compare")}</em>
           <span className="vip-rule"></span>
         </div>
 
         <BookButton className="btn-vip-hero">
-          <>Réserver le VIP <ArrowIcon /></>
+          <>{t("cta")} <ArrowIcon /></>
         </BookButton>
 
         <div className="vip-hero-foot">
-          Sur réservation · <span>Maximum 4 par semaine</span>
+          {t("footPrefix")} · <span>{t("footHighlight")}</span>
         </div>
       </article>
     </section>
@@ -310,30 +255,28 @@ function VipSpotlight({
 
 function AfterHours() {
   const Moon = ICONS.moon;
+  const t = useTranslations("services.after");
   return (
     <Reveal as="section" className="after-grid">
       <div className="card after">
         <div>
-          <span className="after-tag">Sur demande</span>
+          <span className="after-tag">{t("tag")}</span>
           <div className="card-icon">
             <Moon />
           </div>
         </div>
         <div>
-          <h3 className="after-title">Service après fermeture</h3>
-          <p className="after-copy">
-            Pour la dernière minute ou une préférence privée. Disponibilité exclusive
-            certains soirs. Appelez pour réserver.
-          </p>
+          <h3 className="after-title">{t("title")}</h3>
+          <p className="after-copy">{t("copy")}</p>
           <p className="after-availability">
             <span className="avail-dot" aria-hidden="true"></span>
-            Habituellement&nbsp;<strong>21h–23h</strong>, du mardi au samedi · réservation 24&nbsp;h à
-            l&apos;avance.
+            {t("availability")}&nbsp;<strong>{t("availabilityHours")}</strong>,{" "}
+            {t("availabilitySuffix")}
           </p>
         </div>
         <div className="after-foot">
           <a href={BUSINESS.phone.href} className="after-phone">
-            <span className="lbl">Appeler</span>
+            <span className="lbl">{t("callLbl")}</span>
             {BUSINESS.phone.display}
           </a>
           <BookButton />
@@ -348,6 +291,7 @@ function AfterHours() {
 // ─────────────────────────────────────────────────────────────────────
 
 function WelcomeBanner() {
+  const t = useTranslations("services.welcome");
   return (
     <Reveal as="section" className="welcome welcome-v2">
       <span className="corner tl"></span>
@@ -355,48 +299,41 @@ function WelcomeBanner() {
       <span className="corner bl"></span>
       <span className="corner br"></span>
 
-      <div className="welcome-v2-discount">
-        <span className="welcome-v2-pct">15</span>
-        <span className="welcome-v2-pct-sym">%</span>
-        <span className="welcome-v2-pct-lbl">de rabais</span>
+      <div className="welcome-v2-discount" aria-label={`15% ${t("discountLabel")}`}>
+        <div className="welcome-v2-pct-row">
+          <span className="welcome-v2-pct">15</span>
+          <span className="welcome-v2-pct-sym">%</span>
+        </div>
+        <span className="welcome-v2-pct-lbl">{t("discountLabel")}</span>
       </div>
 
       <div className="welcome-v2-body">
         <span className="welcome-v2-tag">
           <span className="dot"></span>
-          Nouvelle clientèle · Welcome offer
+          {t("tag")}
         </span>
         <h2 className="welcome-v2-title">
-          Première visite ?<br />
-          <em>Bienvenue chez nous.</em>
+          {t("titleLead")}
+          <br />
+          <em>{t("titleAccent")}</em>
         </h2>
-        <p className="welcome-v2-copy">
-          Consultation complète pour comprendre votre style et type de cheveux,
-          plus 15&nbsp;% de rabais sur votre première coupe. Découvrez pourquoi
-          les clients reviennent.
-        </p>
+        <p className="welcome-v2-copy">{t("copy")}</p>
         <ul className="welcome-v2-incl">
-          <li>
-            <CheckIcon />
-            <span>Consultation de style personnalisée</span>
-          </li>
-          <li>
-            <CheckIcon />
-            <span>Analyse cheveux et visage</span>
-          </li>
-          <li>
-            <CheckIcon />
-            <span>15&nbsp;% automatique au paiement</span>
-          </li>
+          {(["incl1", "incl2", "incl3"] as const).map((k) => (
+            <li key={k}>
+              <CheckIcon />
+              <span>{t(k)}</span>
+            </li>
+          ))}
         </ul>
       </div>
 
       <div className="welcome-v2-cta">
         <BookButton className="btn-vip-hero">
-          <>Réserver ma première visite <ArrowIcon /></>
+          <>{t("cta")} <ArrowIcon /></>
         </BookButton>
         <a href={BUSINESS.phone.href} className="welcome-v2-phone">
-          <span className="lbl">Ou appelez</span>
+          <span className="lbl">{t("callOr")}</span>
           {BUSINESS.phone.display}
         </a>
       </div>
@@ -508,13 +445,6 @@ export function ServicesSection() {
             ))}
           </div>
 
-          <Reveal>
-            <div className="combo-divider">
-              <span className="rule"></span>
-              <span className="combo-divider-label">{t("comboLabel")}</span>
-              <span className="rule"></span>
-            </div>
-          </Reveal>
           <div className="combo-grid">
             <ServiceCard s={COMBO_SERVICE} idx={0} />
           </div>

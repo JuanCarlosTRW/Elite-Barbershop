@@ -58,10 +58,86 @@
     "tier3Note": "On request",
     "tier4": "First visit",
     "tier4Note": "Welcome offer",
-    "comboLabel": "Complete combo · Finish",
     "popular": "Most booked",
     "drink": "Drink on us",
-    "book": "Book"
+    "book": "Book",
+    "cards": {
+      "coupeAdulte": {
+        "title": "Adult Cut",
+        "copy": "A cut shaped with expertise. A style that holds all week.",
+        "f1": "Style consultation",
+        "f2": "Scissor + clipper cut",
+        "f3": "Wash & styling finish"
+      },
+      "coupeBarbe": {
+        "title": "Cut + Beard",
+        "copy": "The full transformation. Precise cut, razor-lined beard, flawless finish.",
+        "f1": "Full cut",
+        "f2": "Razor-lined beard",
+        "f3": "Finishing wax"
+      },
+      "coupeEnfant": {
+        "title": "Kids Cut",
+        "copy": "A cut tailored for young ones. Quick, comfortable, professional.",
+        "f1": "12 and under",
+        "f2": "Patient approach",
+        "f3": "Tailored style"
+      },
+      "tourOreille": {
+        "title": "Ear Tour",
+        "copy": "The detail that changes everything. Clean, precise lines between cuts.",
+        "f1": "Razor outlines",
+        "f2": "Nape + temples",
+        "f3": "Quick finish"
+      },
+      "comboCard": {
+        "title": "Beard & Ear Tour",
+        "copy": "The finishing touch. Razor-lined beard and clean outlines for a complete look.",
+        "f1": "Drink on us",
+        "f2": "Ear tour",
+        "f3": "Razor-lined beard",
+        "f4": "Finishing wax"
+      }
+    },
+    "vip": {
+      "tier": "Tier II · Premium",
+      "badge": "Limited availability",
+      "titleLead": "The",
+      "titleAccent": "VIP",
+      "titleTrail": "experience",
+      "copy": "The ultimate experience. Personalized consultation, complete transformation, exclusive expertise. For those who want the very best.",
+      "incl1": "15-min private consultation",
+      "incl2": "Full custom cut",
+      "incl3": "Razor-lined beard",
+      "incl4": "Hot towel treatment",
+      "incl5": "Premium drink included",
+      "duration": "/ 75 minutes",
+      "compare": "Standard: $50 / 45 min · VIP: 1 h 15 of dedicated attention",
+      "cta": "Book the VIP",
+      "footPrefix": "By appointment only",
+      "footHighlight": "Maximum 4 per week"
+    },
+    "after": {
+      "tag": "On request",
+      "title": "After-hours service",
+      "copy": "For last-minute or private preference. Exclusive availability on select evenings. Call to book.",
+      "availability": "Usually",
+      "availabilityHours": "9 PM – 11 PM",
+      "availabilitySuffix": "Tuesday to Saturday · 24 h advance booking.",
+      "callLbl": "Call"
+    },
+    "welcome": {
+      "tag": "New clients · Welcome offer",
+      "titleLead": "First visit?",
+      "titleAccent": "Welcome home.",
+      "copy": "A full consultation to learn your style and hair type, plus 15% off your first cut. Discover why our clients come back.",
+      "incl1": "Personalized style consultation",
+      "incl2": "Hair & face analysis",
+      "incl3": "15% applied automatically at checkout",
+      "cta": "Book my first visit",
+      "callOr": "Or call",
+      "discountLabel": "off"
+    }
   },
   "visit": {
     "title": "Visit Elite Barbershop",

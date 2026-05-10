@@ -682,41 +682,50 @@
   }
 }
 
-/* Big 15% discount block — left column */
+/* Big 15% discount block — clean vertical stack: NN% over the label */
 .welcome-v2-discount {
   position: relative;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  font-family: var(--serif);
-  font-weight: 500;
+  gap: 14px;
+  font-family: var(--display);
+  font-weight: 400;
   color: var(--gold);
-  line-height: 0.85;
   filter: drop-shadow(0 4px 24px rgba(212, 168, 83, 0.35));
 }
+.welcome-v2-pct-row {
+  display: inline-flex;
+  align-items: flex-start;
+  line-height: 0.9;
+  gap: 4px;
+}
 .welcome-v2-pct {
-  font-size: clamp(120px, 13vw, 188px);
-  font-style: italic;
-  letter-spacing: -0.04em;
+  font-size: clamp(120px, 13vw, 184px);
+  font-style: normal;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
 }
 .welcome-v2-pct-sym {
-  font-size: clamp(60px, 6vw, 88px);
+  font-size: clamp(56px, 6vw, 84px);
   font-weight: 400;
-  margin-top: 12px;
-  margin-left: 4px;
-  font-style: italic;
+  margin-top: 0.16em;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 .welcome-v2-pct-lbl {
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;
+  transform: none;
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.32em;
+  font-weight: 500;
+  letter-spacing: 0.34em;
   text-transform: uppercase;
   color: var(--gold);
   white-space: nowrap;
+  text-align: center;
 }
 
 /* Body */
@@ -814,9 +823,9 @@
     padding: 56px 28px 48px;
     text-align: center;
   }
-  .welcome-v2-discount { margin-bottom: 12px; }
-  .welcome-v2-pct { font-size: clamp(140px, 32vw, 200px); }
-  .welcome-v2-pct-sym { font-size: clamp(70px, 14vw, 100px); }
+  .welcome-v2-discount { margin-bottom: 12px; gap: 10px; }
+  .welcome-v2-pct { font-size: clamp(120px, 26vw, 180px); }
+  .welcome-v2-pct-sym { font-size: clamp(58px, 12vw, 84px); }
   .welcome-v2-copy { margin-left: auto; margin-right: auto; }
   .welcome-v2-tag { margin-left: auto; margin-right: auto; }
   .welcome-v2-incl { align-items: center; }
@@ -863,9 +872,9 @@
     border-radius: 6px;
     gap: 24px;
   }
-  .welcome-v2-pct { font-size: clamp(110px, 36vw, 170px); }
-  .welcome-v2-pct-sym { font-size: clamp(54px, 14vw, 78px); margin-top: 8px; }
-  .welcome-v2-pct-lbl { font-size: 10px; letter-spacing: 0.24em; bottom: -2px; }
+  .welcome-v2-pct { font-size: clamp(96px, 28vw, 140px); }
+  .welcome-v2-pct-sym { font-size: clamp(48px, 12vw, 72px); margin-top: 0.16em; }
+  .welcome-v2-pct-lbl { font-size: 10px; letter-spacing: 0.28em; }
   .welcome-v2-title { font-size: clamp(28px, 7vw, 38px); }
   .welcome-v2-copy { font-size: 14px; }
   .welcome-v2-incl li { font-size: 13px; text-align: left; max-width: 280px; margin-inline: auto; }
@@ -1340,4 +1349,263 @@
   font-size: 18px;
   letter-spacing: 0;
   color: var(--gold);
+}
+
+/* ============================================================
+   V5 — Premium mobile / tablet polish
+   - Welcome banner stacks cleanly on phones
+   - Combo card centers and reads as a finishing card
+   - Tighter card rhythm + touch-friendly CTAs
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  /* Welcome banner: 15% column on top, body+CTA below */
+  .section-v2 .welcome-v2 {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 56px 36px 48px;
+  }
+  .section-v2 .welcome-v2-tag {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .section-v2 .welcome-v2-incl {
+    align-items: flex-start;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .section-v2 .welcome-v2-incl li {
+    text-align: left;
+  }
+  .section-v2 .welcome-v2-cta {
+    align-items: stretch;
+  }
+  .section-v2 .welcome-v2-phone {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Section breathes a bit less on phones */
+  .section-v2 {
+    padding: 56px 18px 72px;
+  }
+  .section-v2 .s-head--minimal {
+    margin-bottom: 32px;
+  }
+
+  /* Tier rows wrap cleanly */
+  .section-v2 .tier-row {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    font-size: 10px;
+    letter-spacing: 0.26em;
+  }
+  .section-v2 .tier-row .tier-num {
+    font-size: 16px;
+  }
+  .section-v2 .tier-row .tier-line {
+    flex-basis: 30px;
+    min-width: 24px;
+  }
+
+  /* Card content tighter */
+  .section-v2 .core-grid {
+    gap: 16px;
+  }
+  .section-v2 .card {
+    padding: 28px 22px 22px;
+    border-radius: 8px;
+  }
+  .section-v2 .card-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 18px;
+  }
+  .section-v2 .card-num-watermark {
+    font-size: 64px;
+    top: 8px;
+    right: 16px;
+  }
+  .section-v2 .card-title {
+    font-size: 22px;
+    line-height: 1.1;
+  }
+  .section-v2 .card-copy {
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .section-v2 .card-feats li {
+    font-size: 12.5px;
+  }
+  .section-v2 .card-feats {
+    margin-bottom: 22px;
+    gap: 6px;
+  }
+
+  /* Foot stacks vertically with full-width CTA — touch friendly */
+  .section-v2 .card-foot {
+    padding-top: 18px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .section-v2 .price-amount {
+    font-size: 32px;
+  }
+  .section-v2 .btn-book {
+    padding: 11px 14px;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+
+  /* Star card — popular badge sized for phones */
+  .section-v2 .card--star .badge-popular {
+    top: 16px;
+    left: 16px;
+    font-size: 8.5px;
+    padding: 4px 8px;
+  }
+  .section-v2 .card--star .card-num-watermark {
+    top: 8px;
+    right: 16px;
+  }
+
+  /* Drink badge — pinned just above the foot rule */
+  .section-v2 .core-grid > .card .badge-drink,
+  .section-v2 .combo-grid > .card .badge-drink {
+    bottom: 76px;
+    right: 18px;
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+  }
+
+  /* Combo card matches essentials width on mobile (single column) */
+  .section-v2 .combo-grid {
+    margin-top: 24px;
+  }
+
+  /* VIP spotlight — calmer on phones */
+  .spotlight {
+    margin: 64px 0 80px;
+    padding: 56px 0 32px;
+    min-height: auto;
+  }
+  .spotlight-eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.24em;
+  }
+  .spotlight-eyebrow .rule { width: 28px; }
+  .vip-hero {
+    width: 100%;
+    max-width: 100%;
+    padding: 36px 22px 30px;
+    border-width: 1.5px;
+  }
+  .vip-hero-crown { width: 76px; height: 76px; margin-bottom: 18px; }
+  .vip-hero-title { font-size: 32px; line-height: 1.05; }
+  .vip-hero-copy { font-size: 13.5px; margin-bottom: 22px; }
+  .vip-hero-incl {
+    padding: 18px 0;
+    gap: 10px;
+    max-width: 100%;
+  }
+  .vip-hero-incl li { font-size: 12.5px; gap: 12px; }
+  .vip-hero-price .price-amount { font-size: 44px; }
+  .vip-hero-duration { margin-bottom: 22px; }
+  .vip-hero-compare { font-size: 11px; gap: 8px; margin: -16px 0 24px; }
+  .vip-hero-compare .vip-rule { flex-basis: 16px; }
+  .btn-vip-hero { padding: 15px 22px; font-size: 11px; }
+  .vip-hero-foot { font-size: 9px; letter-spacing: 0.2em; }
+
+  /* After hours card — tighter mobile rhythm */
+  .section-v2 .after-grid { margin-bottom: 56px; }
+  .section-v2 .after {
+    padding: 28px 22px;
+    gap: 18px;
+  }
+  .section-v2 .after-title { font-size: 22px; }
+  .section-v2 .after-copy { font-size: 13.5px; line-height: 1.55; }
+  .section-v2 .after-availability {
+    font-size: 11px;
+    padding: 8px 12px;
+  }
+  .section-v2 .after-foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .section-v2 .after-phone {
+    font-size: 18px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Welcome banner — confident phone stack */
+  .section-v2 .welcome-v2 {
+    padding: 44px 22px 36px;
+    border-radius: 8px;
+    gap: 22px;
+  }
+  .welcome-v2-discount {
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  .welcome-v2-pct-row { gap: 2px; }
+  .welcome-v2-pct {
+    font-size: clamp(96px, 28vw, 140px);
+  }
+  .welcome-v2-pct-sym {
+    font-size: clamp(48px, 12vw, 72px);
+  }
+  .welcome-v2-pct-lbl {
+    font-size: 9.5px;
+    letter-spacing: 0.32em;
+  }
+  .welcome-v2-tag {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    padding: 6px 10px;
+  }
+  .welcome-v2-title {
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.04;
+  }
+  .welcome-v2-copy {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  .welcome-v2-incl li { font-size: 12.5px; }
+  .welcome-v2-cta { gap: 12px; }
+  .welcome-v2-phone {
+    font-size: 16px;
+    padding-top: 12px;
+  }
+
+  /* Touch-friendly tap targets — at least 44px for buttons */
+  .section-v2 .btn-book,
+  .btn-vip-hero,
+  .section-v2 .after-phone,
+  .welcome-v2-phone {
+    min-height: 44px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .section-v2 .card-foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .section-v2 .card-foot .btn-book {
+    width: 100%;
+    justify-content: center;
+  }
+  .section-v2 .price {
+    justify-content: flex-start;
+  }
 }

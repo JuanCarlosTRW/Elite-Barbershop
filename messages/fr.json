@@ -53,15 +53,91 @@
     "title": "Nos services",
     "tier1": "Services essentiels",
     "tier1Count": "4 prestations",
-    "tier2": "Tier II · Premium",
+    "tier2": "Niveau II · Premium",
     "tier3": "Disponibilité étendue",
     "tier3Note": "Sur demande",
     "tier4": "Première visite",
-    "tier4Note": "Welcome offer",
-    "comboLabel": "Combo complet · Finition",
+    "tier4Note": "Offre de bienvenue",
     "popular": "Le plus demandé",
     "drink": "Boisson offerte",
-    "book": "Réserver"
+    "book": "Réserver",
+    "cards": {
+      "coupeAdulte": {
+        "title": "Coupe Adulte",
+        "copy": "Coupe façonnée avec expertise. Un style qui dure toute la semaine.",
+        "f1": "Consultation de style",
+        "f2": "Coupe ciseaux + tondeuse",
+        "f3": "Fini lavage et coiffage"
+      },
+      "coupeBarbe": {
+        "title": "Coupe + Barbe",
+        "copy": "La transformation complète. Coupe précise, barbe tracée au rasoir, finition impeccable.",
+        "f1": "Coupe complète",
+        "f2": "Barbe tracée au rasoir",
+        "f3": "Cire de finition"
+      },
+      "coupeEnfant": {
+        "title": "Coupe Enfant",
+        "copy": "Coupe adaptée aux jeunes. Rapide, confortable, professionnel.",
+        "f1": "12 ans et moins",
+        "f2": "Approche patiente",
+        "f3": "Style sur mesure"
+      },
+      "tourOreille": {
+        "title": "Tour d'Oreille",
+        "copy": "Le détail qui change tout. Contours nets et précis entre les coupes.",
+        "f1": "Contours rasoir",
+        "f2": "Nuque + tempes",
+        "f3": "Finition rapide"
+      },
+      "comboCard": {
+        "title": "Barbe & Tour d'Oreille",
+        "copy": "Finition totale. Barbe tracée au rasoir et contours nets pour un look complet.",
+        "f1": "Boisson offerte",
+        "f2": "Tour d'oreille",
+        "f3": "Barbe avec tracé au rasoir",
+        "f4": "Cire de finition"
+      }
+    },
+    "vip": {
+      "tier": "Niveau II · Premium",
+      "badge": "Disponibilité limitée",
+      "titleLead": "L'expérience",
+      "titleAccent": "VIP",
+      "titleTrail": "",
+      "copy": "L'expérience ultime. Consultation personnalisée, transformation totale, expertise exclusive. Pour ceux qui veulent le meilleur.",
+      "incl1": "Consultation privée 15 min",
+      "incl2": "Coupe complète sur mesure",
+      "incl3": "Barbe tracée au rasoir",
+      "incl4": "Soin chaud serviette",
+      "incl5": "Boisson premium incluse",
+      "duration": "/ 75 minutes",
+      "compare": "Standard : 50 $ / 45 min · VIP : 1 h 15 d'attention dédiée",
+      "cta": "Réserver le VIP",
+      "footPrefix": "Sur réservation",
+      "footHighlight": "Maximum 4 par semaine"
+    },
+    "after": {
+      "tag": "Sur demande",
+      "title": "Service après fermeture",
+      "copy": "Pour la dernière minute ou une préférence privée. Disponibilité exclusive certains soirs. Appelez pour réserver.",
+      "availability": "Habituellement",
+      "availabilityHours": "21h–23h",
+      "availabilitySuffix": "du mardi au samedi · réservation 24 h à l'avance.",
+      "callLbl": "Appeler"
+    },
+    "welcome": {
+      "tag": "Nouvelle clientèle · Offre de bienvenue",
+      "titleLead": "Première visite ?",
+      "titleAccent": "Bienvenue chez nous.",
+      "copy": "Consultation complète pour comprendre votre style et type de cheveux, plus 15 % de rabais sur votre première coupe. Découvrez pourquoi les clients reviennent.",
+      "incl1": "Consultation de style personnalisée",
+      "incl2": "Analyse cheveux et visage",
+      "incl3": "15 % automatique au paiement",
+      "cta": "Réserver ma première visite",
+      "callOr": "Ou appelez",
+      "discountLabel": "de rabais"
+    }
   },
   "visit": {
     "title": "Visite Elite Barbershop",
